@@ -1,18 +1,9 @@
-﻿---
-title: Email Triage Env
-emoji: 🐠
-colorFrom: indigo
-colorTo: blue
-sdk: docker
-pinned: false
----
-
-# OpenEnv Email Triage Environment
+﻿# OpenEnv Email Triage Environment
 
 I built this environment as a real-world email triage task for reinforcement-learning style agents.
-The core idea is simple: the agent reads an incoming email, decides what kind of message it is,
-chooses the right priority, and says whether a response is needed. That sounds small, but it captures a
-very common workplace workflow and gives a model a meaningful decision loop to learn from.
+The idea is straightforward: the agent reads an incoming email, classifies the message, assigns a
+priority, and decides whether a response is needed. That is a common workplace workflow, and it gives
+the model a meaningful decision loop to learn from.
 
 ## What this project does
 
@@ -69,7 +60,8 @@ Bootcamp session reference:
 
 - https://huggingface.co/spaces/akshitag001/email-triage-env
 
-If you want to include the bootcamp screenshot in the repository later, add the image as a file and replace this link with a local markdown image.
+If you want to include the bootcamp screenshot in the repository later, add the image as a file and
+replace this link with a local markdown image.
 
 ## Files included in this submission
 
