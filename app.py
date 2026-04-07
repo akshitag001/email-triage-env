@@ -1,6 +1,6 @@
 """FastAPI service exposing OpenEnv-style reset/step/state endpoints."""
 
-from typing import Dict, Any
+from typing import Dict, Any, Optional
 
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel, Field
@@ -35,9 +35,10 @@ def health() -> Dict[str, str]:
 
 
 @app.post("/reset")
-def reset(req: ResetRequest) -> Dict[str, Any]:
+def reset(req: Optional[ResetRequest] = None) -> Dict[str, Any]:
     global _current_env
-    _current_env = EmailTriageEnv(task=req.task)
+    task = req.task if req is not None else "easy"
+    _current_env = EmailTriageEnv(task=task)
     result = _current_env.reset()
     return {
         "observation": result.observation.model_dump(),
