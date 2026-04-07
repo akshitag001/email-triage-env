@@ -1,0 +1,146 @@
+name: email-triage-v1
+version: "1.0.0"
+description: |
+  Email Triage & Classification Environment
+  
+  A real-world task where agents learn to classify, prioritize, and respond to emails.
+  Agents must evaluate email content and metadata to make accurate categorization decisions.
+  This environment simulates the daily task of email management in professional settings.
+
+author: "OpenEnv Contributors"
+keywords:
+  - email
+  - classification
+  - triage
+  - nlp
+  - real-world
+
+tasks:
+  - name: easy
+    description: |
+      Easy email classification task.
+      Emails with clear distinctions: obvious spam, promotions, and urgent support tickets.
+      3-email batch with straightforward category and priority patterns.
+    difficulty: easy
+    num_emails: 3
+    grader:
+      type: agent_grader
+      metrics:
+        - category_accuracy
+        - priority_accuracy
+        - response_accuracy
+      pass_threshold: 0.6
+
+  - name: medium
+    description: |
+      Medium email classification task.
+      Mixed batch of support tickets, internal communications, and B2B sales pitches.
+      4-email batch requiring careful analysis to distinguish intent.
+    difficulty: medium
+    num_emails: 4
+    grader:
+      type: agent_grader
+      metrics:
+        - category_accuracy
+        - priority_accuracy
+        - response_accuracy
+      pass_threshold: 0.6
+
+  - name: hard
+    description: |
+      Hard email classification task.
+      Ambiguous cases with overlapping categories and nuanced priority decisions.
+      5-email batch testing boundary conditions and complex decision-making.
+    difficulty: hard
+    num_emails: 5
+    grader:
+      type: agent_grader
+      metrics:
+        - category_accuracy
+        - priority_accuracy
+        - response_accuracy
+      pass_threshold: 0.6
+
+action_space:
+  type: object
+  properties:
+    category:
+      type: string
+      enum:
+        - spam
+        - promotional
+        - support
+        - sales
+        - internal
+        - other
+      description: Email category classification
+    priority:
+      type: string
+      enum:
+        - low
+        - medium
+        - high
+        - urgent
+      description: Priority level (low to urgent)
+    response_required:
+      type: boolean
+      description: Whether an active response is needed
+
+observation_space:
+  type: object
+  properties:
+    email_id:
+      type: string
+      description: Unique email identifier
+    sender:
+      type: string
+      description: Sender email address
+    subject:
+      type: string
+      description: Email subject line
+    body_preview:
+      type: string
+      description: First 200 characters of email body
+    received_time:
+      type: string
+      format: date-time
+      description: ISO 8601 timestamp of email receipt
+    has_attachment:
+      type: boolean
+      description: Whether email has attachments
+    current_step:
+      type: integer
+      description: Current step in the episode (1-indexed)
+    total_emails_in_batch:
+      type: integer
+      description: Total number of emails in current batch
+
+reward_space:
+  type: float
+  minimum: 0.0
+  maximum: 1.0
+  description: |
+    Reward between 0.0 and 1.0 based on classification accuracy.
+    - 0.3 for correct category
+    - 0.3 for correct priority
+    - 0.3 for correct response requirement
+    - Up to 0.1 efficiency bonus for fast processing
+
+episode_termination:
+  - type: step_limit
+    max_steps: 10
+  - type: task_completion
+    when: all_emails_processed
+
+entry_point:
+  module: env
+  class: EmailTriageEnv
+  method: __init__
+
+metadata:
+  env_type: task_completion
+  observation_format: structured_dict
+  action_format: structured_dict
+  reward_type: dense
+  horizon: 10
+  time_limit: 300
