@@ -69,3 +69,13 @@ def step(action: Action) -> Dict[str, Any]:
 @app.get("/state")
 def state() -> Dict[str, Any]:
     return _current_env.state()
+
+
+def main() -> None:
+    """Entry point for uvicorn server."""
+    import uvicorn
+    uvicorn.run(app, host="0.0.0.0", port=7860)
+
+
+if __name__ == "__main__":
+    main()
