@@ -1,4 +1,14 @@
-﻿# OpenEnv Email Triage Environment
+﻿---
+title: OpenEnv Email Triage
+emoji: 📧
+colorFrom: blue
+colorTo: indigo
+sdk: docker
+app_file: app.py
+pinned: false
+---
+
+# OpenEnv Email Triage Environment
 
 I built this environment as a real-world email triage task for reinforcement-learning style agents.
 The idea is straightforward: the agent reads an incoming email, classifies the message, assigns a
